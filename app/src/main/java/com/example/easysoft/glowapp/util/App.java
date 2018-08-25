@@ -1,8 +1,9 @@
-package com.example.easysoft.glowapp;
+package com.example.easysoft.glowapp.util;
 
 import android.app.Application;
 
 import com.bumptech.glide.request.target.ViewTarget;
+import com.example.easysoft.glowapp.R;
 
 /**
  * Created by YATRAONLINE\sushant.kumar on 24/8/18.
