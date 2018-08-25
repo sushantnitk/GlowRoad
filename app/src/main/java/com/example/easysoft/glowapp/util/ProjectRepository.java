@@ -13,10 +13,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProjectRepository {
     private GLowRoadService gLowRoadService;
-    private static ProjectRepository projectRepository;
 
-    private ProjectRepository() {
-        //TODO this gitHubService instance will be injected using Dagger in part #2 ...
+    public ProjectRepository() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(GLowRoadService.HTTPS_FLICKR_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -25,15 +23,7 @@ public class ProjectRepository {
         gLowRoadService = retrofit.create(GLowRoadService.class);
     }
 
-    public synchronized static ProjectRepository getInstance() {
-        //TODO No need to implement this singleton in Part #2 since Dagger will handle it ...
-        if (projectRepository == null) {
-            if (projectRepository == null) {
-                projectRepository = new ProjectRepository();
-            }
-        }
-        return projectRepository;
-    }
+
 
     public LiveData<Project> getProjectList() {
         final MutableLiveData<Project> data = new MutableLiveData<>();
@@ -41,26 +31,16 @@ public class ProjectRepository {
         gLowRoadService.getPhotoList().enqueue(new Callback<Project>() {
             @Override
             public void onResponse(Call<Project> call, Response<Project> response) {
-                data.setValue(response.body());
+                data.postValue(response.body());
             }
 
             @Override
             public void onFailure(Call<Project> call, Throwable t) {
                 // TODO better error handling in part #2 ...
-                data.setValue(null);
+                data.postValue(null);
             }
         });
 
         return data;
-    }
-
-
-
-    private void simulateDelay() {
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }

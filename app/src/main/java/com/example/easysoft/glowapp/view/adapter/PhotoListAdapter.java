@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.easysoft.glowapp.R;
 import com.example.easysoft.glowapp.model.PhotoList;
 
@@ -47,6 +48,7 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
             if (photoList.getImageUrl() != null) {
                 Glide.with(mContext)
                         .load(photoList.getImageUrl())
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.mImageView);
             }
             setScaleAnimation(holder.itemView, position);

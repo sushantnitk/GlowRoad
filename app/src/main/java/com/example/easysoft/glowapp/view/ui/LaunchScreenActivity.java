@@ -27,10 +27,6 @@ public class LaunchScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        progressBar=findViewById(R.id.progressBar);
-        progressBar.setProgress(0);
-        textView=findViewById(R.id.textView);
-        progressText = findViewById(R.id.tv_progress);
 
         RunAnimation();
         showProgressBar();
