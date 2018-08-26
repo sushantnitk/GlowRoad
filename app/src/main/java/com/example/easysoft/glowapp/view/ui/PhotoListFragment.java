@@ -3,7 +3,10 @@ package com.example.easysoft.glowapp.view.ui;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.easysoft.glowapp.R;
 import com.example.easysoft.glowapp.model.PhotoList;
@@ -132,4 +136,6 @@ public class PhotoListFragment extends Fragment {
         textView.clearAnimation();
         textView.startAnimation(a);
     }
+
+
 }
