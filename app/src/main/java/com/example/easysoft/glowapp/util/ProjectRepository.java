@@ -12,35 +12,26 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProjectRepository {
+    private static ProjectRepository mInstance;
     private GLowRoadService gLowRoadService;
+    private Retrofit retrofit;
 
     public ProjectRepository() {
-        Retrofit retrofit = new Retrofit.Builder()
+         retrofit = new Retrofit.Builder()
                 .baseUrl(GLowRoadService.HTTPS_FLICKR_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        gLowRoadService = retrofit.create(GLowRoadService.class);
     }
 
+    public static synchronized ProjectRepository getInstance() {
+        if (mInstance == null) {
+            mInstance = new ProjectRepository();
+        }
+        return mInstance;
+    }
 
-
-    public LiveData<Project> getProjectList() {
-        final MutableLiveData<Project> data = new MutableLiveData<>();
-
-        gLowRoadService.getPhotoList().enqueue(new Callback<Project>() {
-            @Override
-            public void onResponse(Call<Project> call, Response<Project> response) {
-                data.postValue(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<Project> call, Throwable t) {
-                // TODO better error handling in part #2 ...
-                data.postValue(null);
-            }
-        });
-
-        return data;
+    public GLowRoadService getApi() {
+        return retrofit.create(GLowRoadService.class);
     }
 }

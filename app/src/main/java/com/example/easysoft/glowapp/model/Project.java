@@ -11,9 +11,20 @@ import java.util.List;
 public class Project {
     @SerializedName("photos")
     private PhotoClass photos;
+    @SerializedName("pages")
+    private
+    int totalPages;
 
     public PhotoClass getPhotos() {
         return photos;
+    }
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(int totalPages) {
+        this.totalPages = totalPages;
     }
 
     public class PhotoClass {

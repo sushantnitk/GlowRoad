@@ -4,6 +4,7 @@ import com.example.easysoft.glowapp.model.Project;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 /**
  * Created by YATRAONLINE\sushant.kumar on 23/8/18.
@@ -15,6 +16,6 @@ public interface GLowRoadService {
 
 
     @GET("services/rest/?method=flickr.photos.search&api_key=641c87bd78e54920b01e9a5d8bb726d7&format=json&nojsoncallback=1&text=shirts&extras=url_q")
-    Call<Project> getPhotoList();
+    Call<Project> getPhotoList(@Query("page")int page,@Query("per_page") int pageSize);
 
 }

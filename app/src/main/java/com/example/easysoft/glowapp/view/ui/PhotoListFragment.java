@@ -3,10 +3,8 @@ package com.example.easysoft.glowapp.view.ui;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
+import android.arch.paging.PagedList;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,14 +20,9 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.easysoft.glowapp.R;
 import com.example.easysoft.glowapp.model.PhotoList;
-import com.example.easysoft.glowapp.model.Project;
 import com.example.easysoft.glowapp.view.adapter.PhotoListAdapter;
 import com.example.easysoft.glowapp.viewmodel.PhotoListViewModel;
 
@@ -73,27 +66,20 @@ public class PhotoListFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        observeViewModel(viewModel);
         initList();
         RunAnimation();
+        observeViewModel(viewModel);
     }
 
 
     private void observeViewModel(PhotoListViewModel viewModel) {
-        // Update the list when the data changes
-        viewModel.getProjectListObservable().observe(this, new Observer<Project>() {
+        viewModel.itemPagedList.observe(this, new Observer<PagedList<PhotoList>>() {
             @Override
-            public void onChanged(@Nullable Project projects) {
-                if (projects != null) {
-                    refreshLayout.setRefreshing(false);
-                    loaderScreen.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
-                    List<PhotoList> photos = projects.getPhotos().getPhotoList();
-                    photoLists.addAll(photos);
-                    photoListAdapter.notifyDataSetChanged();
-
-
-                }
+            public void onChanged(@Nullable PagedList<PhotoList> items) {
+                refreshLayout.setRefreshing(false);
+                loaderScreen.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+                photoListAdapter.submitList(items);
             }
         });
     }
@@ -118,7 +104,7 @@ public class PhotoListFragment extends Fragment {
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(1, LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        photoListAdapter = new PhotoListAdapter(getActivity(),photoLists);
+        photoListAdapter = new PhotoListAdapter(getActivity());
         recyclerView.setAdapter(photoListAdapter);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
