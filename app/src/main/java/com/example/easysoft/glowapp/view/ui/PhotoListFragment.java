@@ -17,17 +17,11 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.example.easysoft.glowapp.R;
 import com.example.easysoft.glowapp.model.PhotoList;
 import com.example.easysoft.glowapp.view.adapter.PhotoListAdapter;
 import com.example.easysoft.glowapp.viewmodel.PhotoListViewModel;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -40,10 +34,8 @@ public class PhotoListFragment extends Fragment {
     public RecyclerView.LayoutManager layoutManager;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout refreshLayout;
-    private List<PhotoList> photoLists = new ArrayList<>();
     private PhotoListAdapter photoListAdapter;
     private TextView textView;
-    private LinearLayout loaderScreen;
     private PhotoListViewModel viewModel;
 
     @Inject
@@ -67,7 +59,6 @@ public class PhotoListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initList();
-        RunAnimation();
         observeViewModel(viewModel);
     }
 
@@ -77,7 +68,6 @@ public class PhotoListFragment extends Fragment {
             @Override
             public void onChanged(@Nullable PagedList<PhotoList> items) {
                 refreshLayout.setRefreshing(false);
-                loaderScreen.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
                 photoListAdapter.submitList(items);
             }
@@ -98,7 +88,6 @@ public class PhotoListFragment extends Fragment {
     private void initList() {
         refreshLayout = getActivity().findViewById(R.id.swipe_layout);
         recyclerView = getActivity().findViewById(R.id.recycler_view);
-        loaderScreen = getActivity().findViewById(R.id.sp_loader);
         textView=getActivity().findViewById(R.id.tv_load);
         refreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW);
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(1, LinearLayoutManager.VERTICAL);
@@ -112,15 +101,6 @@ public class PhotoListFragment extends Fragment {
                 observeViewModel(viewModel);
             }
         });
-    }
-
-    private void RunAnimation()
-    {
-        Animation a = AnimationUtils.loadAnimation(getActivity(), R.anim.textanim);
-        a.reset();
-        a.setDuration(3000);
-        textView.clearAnimation();
-        textView.startAnimation(a);
     }
 
 
